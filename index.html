@@ -1,0 +1,582 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fen'heal - Личный кабинет</title>
+  <style>
+    :root {
+      --bg: #F5F9F1;
+      --card-bg: #E8F0E3;
+      --accent: #A3CFA3;
+      --text-color: #4D4D4D;
+      --light-accent: #D6E4DA;
+      --beige: #F2F0E7;
+      --radius: 16px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --warning: #FFE6B3;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Nunito Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-color);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--beige);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .greeting {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .profile-info {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 30px;
+    }
+
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .profile-label {
+      opacity: 0.7;
+      font-size: 14px;
+    }
+
+    .health-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .card-value {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .graph {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .reminders {
+      margin-bottom: 30px;
+    }
+
+    .reminder {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 12px 16px;
+      margin-bottom: 12px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .action-button {
+      background: var(--light-accent);
+      border: none;
+      border-radius: var(--radius);
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: var(--shadow);
+      transition: all 0.2s ease;
+    }
+
+    .action-button:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Уведомления */
+    .notifications {
+      margin-bottom: 30px;
+    }
+
+    .notification {
+      background: var(--warning);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif-text {
+      font-size: 14px;
+    }
+
+    .notif-date {
+      font-weight: bold;
+      color: #8B6F47;
+    }
+
+    /* Приёмы у врачей */
+    .appointments {
+      margin-bottom: 30px;
+    }
+
+    .appointment-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .appointment-title {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .appointment-subtitle {
+      font-size: 14px;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+
+    .appointment-meta {
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* История болезни */
+    .medical-history {
+      margin-bottom: 30px;
+    }
+
+    .history-item {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .history-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .history-title {
+      font-weight: bold;
+    }
+
+    .history-date {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .history-content {
+      margin-top: 12px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .history-content.active {
+      display: block;
+    }
+
+    .toggle-btn {
+      margin-top: 8px;
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* Анализы и заключения */
+    .reports {
+      margin-bottom: 80px;
+    }
+
+    .report-card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .report-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .report-icon {
+      font-size: 24px;
+      color: var(--accent);
+    }
+
+    .report-title {
+      font-weight: bold;
+    }
+
+    .report-date {
+      font-size: 13px;
+      color: #888;
+    }
+
+    .download-link {
+      text-decoration: none;
+      color: var(--accent);
+      font-size: 14px;
+    }
+
+    /* Отслеживание цикла */
+    .cycle-tracking {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    .cycle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+    }
+
+    .nav-item {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-color);
+    }
+
+    .nav-icon {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    @media (min-width: 768px) {
+      .health-cards {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .actions {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Шапка -->
+  <header>
+    <h1>Fen'heal</h1>
+    <div class="avatar">М</div>
+  </header>
+
+  <!-- Приветствие -->
+  <div class="greeting">Здравствуйте, Мария 👋</div>
+
+  <!-- Профиль -->
+  <div class="profile-info">
+    <div class="profile-row">
+      <div class="profile-label">Имя</div>
+      <div>Мария</div>
+    </div>
+    <div class="profile-row">
+      <div class="profile-label">Дата рождения</div>
+      <div>15.04.1990</div>
+    </div>
+    <div class="profile-row">
+      <div class="profile-label">Группа крови</div>
+      <div>II (A), Rh+</div>
+    </div>
+  </div>
+
+  <!-- Карточки здоровья -->
+  <div class="health-cards">
+    <div class="card">
+      <div class="card-title">Давление</div>
+      <div class="card-value">120 / 80 мм рт. ст.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Пульс</div>
+      <div class="card-value">72 уд/мин</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Глюкоза</div>
+      <div class="card-value">5.2 ммоль/л</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Сон</div>
+      <div class="card-value">7 часов</div>
+    </div>
+  </div>
+
+  <!-- График -->
+  <div class="graph">
+    <strong>Анализ сна за неделю</strong><br/>
+    <em>Недавние данные загружаются...</em>
+  </div>
+
+  <!-- Напоминания -->
+  <div class="reminders">
+    <div class="reminder">
+      <div>💊 Таблетка А — 09:00</div>
+      <button style="background:var(--accent); color:white; border:none; border-radius:12px; padding:6px 12px;">Выполнить</button>
+    </div>
+    <div class="reminder">
+      <div>💊 Таблетка Б — 14:00</div>
+      <button style="background:var(--accent); color:white; border:none; border-radius:12px; padding:6px 12px;">Выполнить</button>
+    </div>
+  </div>
+
+  <!-- Кнопки действий -->
+  <div class="actions">
+    <button class="action-button">📅 Записаться к врачу</button>
+    <button class="action-button">💬 Связь с врачом</button>
+    <button class="action-button">📝 Добавить заметку</button>
+    <button class="action-button">📁 Мои анализы</button>
+  </div>
+
+  <!-- Уведомления -->
+  <div class="notifications">
+    <h2>Уведомления</h2>
+    <div class="notification">
+      <div class="notif-text">Внимание! Через 2 дня у вас приём у терапевта.</div>
+      <div class="notif-date">12.05.2025</div>
+    </div>
+  </div>
+
+  <!-- Приёмы у врачей -->
+  <div class="appointments">
+    <h2>Приёмы у врачей</h2>
+
+    <div class="appointment-card">
+      <div class="appointment-title">Др. Елена Смирнова</div>
+      <div class="appointment-subtitle">Терапевт</div>
+      <div class="appointment-meta">📅 12.05.2025 | ⏰ 14:00 | 📍 Поликлиника №3</div>
+    </div>
+
+    <div class="appointment-card">
+      <div class="appointment-title">Др. Анна Петрова</div>
+      <div class="appointment-subtitle">Гинеколог</div>
+      <div class="appointment-meta">📅 08.05.2025 | ⏰ 10:00 | 💻 Онлайн</div>
+    </div>
+
+    <div class="appointment-card">
+      <div class="appointment-title">Др. Сергей Иванов</div>
+      <div class="appointment-subtitle">Кардиолог</div>
+      <div class="appointment-meta">📅 28.04.2025 | ⏰ 16:00 | 📍 Центр здоровья</div>
+    </div>
+
+    <div class="appointment-card">
+      <div class="appointment-title">Др. Ольга Кузнецова</div>
+      <div class="appointment-subtitle">Эндокринолог</div>
+      <div class="appointment-meta">📅 19.04.2025 | ⏰ 11:00 | 📍 Поликлиника №3</div>
+    </div>
+
+    <div class="appointment-card">
+      <div class="appointment-title">Др. Алексей Соколов</div>
+      <div class="appointment-subtitle">Невролог</div>
+      <div class="appointment-meta">📅 10.04.2025 | ⏰ 15:00 | 💬 Telegram</div>
+    </div>
+
+  </div>
+
+  <!-- История болезни -->
+  <div class="medical-history">
+    <h2>История болезни</h2>
+
+    <div class="history-item">
+      <div class="history-header">
+        <div class="history-title">ОРВИ</div>
+        <div class="history-date">20.01.2024 — 28.01.2024</div>
+      </div>
+      <div class="history-content" id="content-1">
+        Лёгкая форма ОРВИ. Рекомендации: постельный режим, обильное питьё, приём парацетамола при температуре выше 38°C.
+      </div>
+      <button class="toggle-btn" onclick="toggleContent('content-1')">Подробнее</button>
+    </div>
+
+    <div class="history-item">
+      <div class="history-header">
+        <div class="history-title">Гипертоническая болезнь</div>
+        <div class="history-date">12.03.2023 — н.в.</div>
+      </div>
+      <div class="history-content" id="content-2">
+        Повышенное артериальное давление. Назначены препараты: Эналаприл, Диуретики. Регулярный контроль давления.
+      </div>
+      <button class="toggle-btn" onclick="toggleContent('content-2')">Подробнее</button>
+    </div>
+  </div>
+
+  <!-- Анализы и заключения -->
+  <div class="reports">
+    <h2>Анализы и заключения</h2>
+
+    <div class="report-card">
+      <div class="report-left">
+        <div class="report-icon">📄</div>
+        <div>
+          <div class="report-title">Общий анализ крови</div>
+          <div class="report-date">10.04.2025</div>
+        </div>
+      </div>
+      <a href="#" class="download-link">Скачать PDF</a>
+    </div>
+
+    <div class="report-card">
+      <div class="report-left">
+        <div class="report-icon">📄</div>
+        <div>
+          <div class="report-title">Биохимический анализ</div>
+          <div class="report-date">05.04.2025</div>
+        </div>
+      </div>
+      <a href="#" class="download-link">Скачать PDF</a>
+    </div>
+
+    <div class="report-card">
+      <div class="report-left">
+        <div class="report-icon">📄</div>
+        <div>
+          <div class="report-title">Заключение кардиолога</div>
+          <div class="report-date">28.03.2025</div>
+        </div>
+      </div>
+      <a href="#" class="download-link">Скачать DOCX</a>
+    </div>
+
+  </div>
+
+  <!-- Отслеживание цикла -->
+  <div class="cycle-tracking">
+    <h2>Цикл</h2>
+    <div class="cycle-row">
+      <div class="profile-label">Последняя менструация</div>
+      <div>10.04.2025</div>
+    </div>
+    <div class="cycle-row">
+      <div class="profile-label">Продолжительность цикла</div>
+      <div>28 дней</div>
+    </div>
+    <div class="cycle-row">
+      <div class="profile-label">Ожидаемая дата</div>
+      <div style="color: var(--accent); font-weight: bold;">08.05.2025</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Нижнее меню -->
+<footer>
+  <div class="nav-item"><div class="nav-icon">🏠</div>Главная</div>
+  <div class="nav-item"><div class="nav-icon">📅</div>Приёмы</div>
+  <div class="nav-item"><div class="nav-icon">📋</div>История</div>
+  <div class="nav-item"><div class="nav-icon">👤</div>Профиль</div>
+</footer>
+
+<script>
+  function toggleContent(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle("active");
+  }
+</script>
+
+</body>
+</html>
